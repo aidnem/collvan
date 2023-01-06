@@ -2,12 +2,15 @@ import argparse
 from sys import argv
 from typing import Callable
 
+from collvan.syntax import syntax_main
+
 def run_console():
     """Entry point when collvan is run from the console `collvan ...`"""
     main()
 
 """List of collvan tool names, and their respective main functions"""
 COLLVAN_TOOLS: dict[str, Callable[[list[str]], None]] = {
+    "syntax": syntax_main,
 }
 
 def parse_args(args: list[str]) -> argparse.Namespace:
@@ -35,6 +38,6 @@ def parse_args(args: list[str]) -> argparse.Namespace:
     return parser.parse_args(args)
 
 def main():
-    args: argparse.Namespace = parse_args(argv)
+    args: argparse.Namespace = parse_args(argv[1:])
     print(f"[collvan wrapper] running tool '{args.tool}' with args {args.toolargs}")
     COLLVAN_TOOLS[args.tool](args.toolargs)
